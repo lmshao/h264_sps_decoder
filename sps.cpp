@@ -191,6 +191,12 @@ bool h264_decode_sps(BYTE * buf,unsigned int nLen,int &width,int &height,int &fp
             int frame_crop_right_offset=Ue(buf,nLen,StartBit);
             int frame_crop_top_offset=Ue(buf,nLen,StartBit);
             int frame_crop_bottom_offset=Ue(buf,nLen,StartBit);
+            
+            // for YUV420
+            int crop_unit_x = 2;
+            int crop_unit_y = 2 * (2 - frame_mbs_only_flag);
+            width -= crop_unit_x * (frame_crop_left_offset + frame_crop_right_offset);
+            height -= crop_unit_y * (frame_crop_top_offset + frame_crop_bottom_offset);
         }
         int vui_parameter_present_flag=u(1,buf,StartBit);
         if(vui_parameter_present_flag)
